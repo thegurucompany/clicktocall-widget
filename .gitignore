@@ -5,3 +5,5 @@ dist/
 package-lock.json
 # Tern port
 .tern-port
+.env
+config.json

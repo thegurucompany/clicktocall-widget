@@ -7,7 +7,6 @@ const gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps'),
   stylish = require('jshint-stylish'),
   webpack = require('webpack-stream'),
-  expose = require('gulp-expose'),
   del = require('del'),
   pckg = require('./package.json'),
   modulePath = './node_modules',
@@ -28,7 +27,6 @@ gulp.task('js', () =>{
     .pipe(babel({
       presets: ['es2015']
     }))
-    .pipe(expose('window', 'gClickToCall'))
     .pipe(sourcemaps.init())
     .pipe(concat(`widget-${pckg.version}.js`))
     .pipe(sourcemaps.write())
