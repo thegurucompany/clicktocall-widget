@@ -14,7 +14,7 @@ Follow these steps to integrate the latest version of the plugin in your website
 - Include the javascript library within the **<HEAD>** HTML tag of your site:
 
 ```HTML
-<script src="https://cdn.gurucomm.mx/js/click-to-call/widget-1.0.0.js"></script>
+<script src="//cdn.gurucomm.mx/js/click-to-call/widget-1.0.0.js"></script>
 ```
 
 - Initialize JS plugin with the following snippet before the closing *</BODY>* tag.
