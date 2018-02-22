@@ -1,3 +1,12 @@
+/**
+ * Click To Call ApiClient Class
+ * @author TheGurúCompany SAPI de CV
+ *
+ * This class is responsable for creating HTTP interactions to GuruComm REST API
+ *  server.
+ * Implements a base interface based on `superagent` npm that handles API
+ *  authentication, succes and error handling.
+**/
 const request = require('superagent')
 const config = require('../config')
 const Promise = require('promise')
@@ -8,10 +17,23 @@ const ENDPOINTS = {
 }
 
 class ApiClient {
+  /**
+   * Class constructor.
+   * Intiializes a new ApiClient instance with the given parameters.
+   * @param {string} apiKey - REST API authentication key
+   * @param {string} phone - Clients 10 digit phone
+   * @return {ApiClient}
+  **/
   constructor (apiKey, phone) {
     this.apiKey = apiKey
     this.phone = phone
   }
+  /**
+   * Returns a fully formed URL that consists of the union of the config's
+   *  API_URL setting and the given `endpoint`
+   * @param {string} endpoint - RESTFul path -> /company_phones
+   * @return {string}
+  **/
   getURL (endpoint) {
     return [
       config.API_URL,
@@ -68,10 +90,26 @@ class ApiClient {
         })
     })
   }
+  /**
+   * Appends an authentication token to the given `headers` Hash object.
+   * These headers can then be used in a `superagent` or `baseRequest` context
+   *  to perform an authenticated HTTP request.
+   * The updated headers are then returned
+   * @param {object} headers - HTTP headers
+   * @return {object}
+  **/
   appendAuthHeader (headers) {
     headers['Authorization'] = `Bearer ${this.apiKey}`
     return headers
   }
+  /**
+   * Executes a GET request via `call` method to fetch information of the
+   *  instance's 10 digit phone variable.
+   * Returns a promise that resolves with HTTP response or rejects
+   *  with an HTTP `Error` returned by the server preventing further
+   *  execution.
+   * @return {Promise}
+  **/
   showCompanyPhone () {
     let endpoint = [ENDPOINTS.companyPhones.show, this.phone].join('/')
     return this.call('get', endpoint)

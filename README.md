@@ -3,7 +3,7 @@
 Gurúcomm Javascript Widget integrates an HTML Click to Call Button widget that you cn embed in your website via SDK Calls with your Click. The main features of our widget include:
 
 - Unobtrusive integration to your website in a left or right corner.
-- No external JS frameworks (compatible with jQuery, Angular, Ember)
+- Standalone javascript file. No additional CSS or HTML files are included
 - Configure color preferences and styles within your dashboard account.
 - Configurable work schedules that prevent clients from calling you off hours.
 
@@ -32,7 +32,6 @@ Follow these steps to integrate the latest version of the plugin in your website
 
 If you are thinking about making Gurúcomm Click To Call Widget better, or you just want to hack on it, that’s great! Fork this repository and follow these instructions:
 
-
 ### Dev Dependencies
 
 You will need the following things properly installed on your computer.
@@ -58,6 +57,16 @@ npm install -g gulp
 npm install -g yarn
 ```
 
+### Config.json file
+
+Once the dependencies are installed, you need to setup your local config. Create a new file at `/config.json` and specify your settings. Default settings are stored in `/config.sample.json` for convinience.
+
+```js
+{
+  "API_URL": "https://api.gurucomm.mx"
+}
+```
+
 ### Libraries
 
 Install yarn dependencies.
@@ -74,7 +83,25 @@ You can use gulp to build the application or watch your updates. This mechanism 
 gulp watch
 ```
 
+### Testing
+
+This application uses `karma` for unit and integration testing. Before you commit your changes, make sure you've tested everything.
+
+- Install karma globally
+
+```
+npm install -g karma
+```
+
+- Run specs
+
+```
+npm test
+```
+
+**Note**: No Pull Request will be merged if karma build fails.
+
 ## Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, you can help us by
-submitting an issue to our [GitHub Repository][github_newissue]. Even better you can submit a Pull Request
+submitting an issue to this repository. Even better you can submit a Pull Request
 with a fix.

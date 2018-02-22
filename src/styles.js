@@ -1,3 +1,12 @@
+/**
+ * Click To Call Widget Stylesheets
+ * @author TheGurúCompany SAPI de CV
+ *
+ * This module defines all applicable css stylesheets that are injected in a
+ *  wiget's website
+ * All definitions are applied to `a` tags and `divs` using
+ *  `gcomm-click-to-call` namespace
+**/
 const Styles = {
   edgeMargin: '1.0rem',
   iconSize: '50%',
