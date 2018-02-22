@@ -116,6 +116,13 @@
         resolve(widget)
       })
     }
+    /**
+     * Initializes an HTML div that includes the configured Off hours messsage
+     * fecthed form API.
+     * Appends the result to the main widget which will be hidden until clicked
+     * @param {DOM} widget - widget zepto object
+     * @return null
+    **/
     addOffHoursBox (widget) {
       this.offHoursBox = _z([
         '<div class="gcomm-click-to-call-off-hours">',
@@ -124,9 +131,23 @@
       ].join(''))
       this.offHoursBox.appendTo(widget)
     }
+    /**
+     * Returns a `tel:` complaint link to be used in main widget href attr
+     * based on phone line fetched from API.
+     * @return {string}
+    **/
     getWidgetTarget () {
       return `tel:${this.companyPhone.phone}`
     }
+    /**
+     * main widget click event handler
+     * Validates that the current time and day are valid for the configured
+     *  work schedule fecthed form API.
+     * If work schedule is invalid, off hours box is displayed.
+     * else tel:* protocol is performed.
+     * @param {event} e - click event
+     * @return {null}
+    **/
     widgetOnClick (e) {
       let isIvalidWorkSchedule = this.workSchedule.isInvalidSchedule()
       if (isIvalidWorkSchedule) {
@@ -134,6 +155,10 @@
         this.toggleOffHoursBox()
       }
     }
+    /**
+     * toggles the display css attribute of DOM off hours box.
+     * @return {null}
+    **/
     toggleOffHoursBox () {
       this.offHoursBox.toggle()
     }
