@@ -20,16 +20,16 @@ class WorkSchedule {
   isValidDay () {
     let today = new Date()
     let todayBit = Math.pow(2, today.getDay())
-    return (todayBit && this.days) === todayBit
+    return this.days > 0 && ((todayBit & this.days) === todayBit)
   }
   isValidHour () {
-    let todayTime = new Date().getTime()
+    let currentTime = new Date().getTime()
     let startTime = this.startsAt.getTime()
     let endTime = this.endsAt.getTime()
-    return todayTime >= startTime && todayTime <= endTime
+    return currentTime > startTime && currentTime < endTime
   }
-  isValid () {
-    return this.isInvalid || (this.isValidDay() && this.isValidHour())
+  isInvalidSchedule () {
+    return !this.isInvalid && (!this.isValidDay() || !this.isValidHour())
   }
 }
 

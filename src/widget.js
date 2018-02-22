@@ -109,20 +109,33 @@
             `<a href="${widgetTarget}" `, 'class="gcomm-click-to-call-button">',
             '</a>'
           ].join(''))
-        widget.click(this.widgetOnClick.bind(this))
         this.addWidgetIcon(widget)
+        this.addOffHoursBox(widget)
         widget.appendTo('body')
+        widget.click(this.widgetOnClick.bind(this))
         resolve(widget)
       })
+    }
+    addOffHoursBox (widget) {
+      this.offHoursBox = _z([
+        '<div class="gcomm-click-to-call-off-hours">',
+        this.settings.getOffHoursMessageContent(),
+        '</div>'
+      ].join(''))
+      this.offHoursBox.appendTo(widget)
     }
     getWidgetTarget () {
       return `tel:${this.companyPhone.phone}`
     }
     widgetOnClick (e) {
-      let isWorkScheduleValid = this.workSchedule.isValid()
-      if (isWorkScheduleValid) {
+      let isIvalidWorkSchedule = this.workSchedule.isInvalidSchedule()
+      if (isIvalidWorkSchedule) {
         e.preventDefault()
+        this.toggleOffHoursBox()
       }
+    }
+    toggleOffHoursBox () {
+      this.offHoursBox.toggle()
     }
     /**
      * Initializes an SVG icon and appends it to the main widget button

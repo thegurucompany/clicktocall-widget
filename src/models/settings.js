@@ -39,7 +39,10 @@ class Settings {
     data = data || {}
     this.color = data['click_to_call_color']
     this.position = data['click_to_call_position']
-    this.offHoursMessage = data['click_to_call_off_hours_message']
+    this.offHoursMessage = (
+      data['click_to_call_off_hours_message'] ||
+      this.getDefaultOffHoursMessage()
+    )
   }
   getHexColor () {
     let colorData = COLORS[this.color] || COLORS['red']
@@ -55,6 +58,20 @@ class Settings {
     let replaceRegexp = /{{margin}}/
     let positionCss = positionData.css
     return positionCss.replace(replaceRegexp, margin)
+  }
+  getOffHoursMessageContent () {
+    let result = null
+    if (this.offHoursMessage) {
+      result = this.offHoursMessage.split('\n').join('<br />')
+    }
+    return result
+  }
+  getDefaultOffHoursMessage () {
+    return [
+      'Thanks for reaching out, we\'re currently not available by phone.',
+      'We\'ll be back as soon as possible.',
+      'Please browse our site for other contact options.'
+    ].join('\n')
   }
 }
 
