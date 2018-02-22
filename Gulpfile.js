@@ -36,17 +36,17 @@ gulp.task('js', () => {
     .pipe(uglify())
     .pipe(gulp.dest(`./${distFolder}/js`))
     .pipe(notify('JS processed'))
-});
+})
 
-gulp.task('watch', ['lint', 'js'], () =>{
-  gulp.watch('./src/**/*.js', ['lint', 'js']);
-});
+gulp.task('watch', ['lint', 'js'], () => {
+  gulp.watch('./src/**/*.js', ['lint', 'js'])
+})
 
-gulp.task('clean', () =>{
-  return del([`./${distFolder}`]);
-});
+gulp.task('clean', () => {
+  return del([`./${distFolder}`])
+})
 
 gulp.task('default', ['clean'], () =>{
-  gulp.start('lint');
-  gulp.start('js');
-});
+  gulp.start('lint')
+  gulp.start('js')
+})
