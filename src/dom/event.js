@@ -3,15 +3,15 @@
 //     Zepto.js may be freely distributed under the MIT license.
 
 module.exports = function ($) {
-  var _zid = 1, undefined,
-    slice = Array.prototype.slice,
-    isFunction = $.isFunction,
-    isString = function (obj) { return typeof obj === 'string' },
-    handlers = {},
-    specialEvents = {},
-    focusinSupported = 'onfocusin' in window,
-    focus = { focus: 'focusin', blur: 'focusout' },
-    hover = { mouseenter: 'mouseover', mouseleave: 'mouseout' }
+  let _zid = 1
+  let slice = Array.prototype.slice
+  let isFunction = $.isFunction
+  let isString = function (obj) { return typeof obj === 'string' }
+  let handlers = {}
+  let specialEvents = {}
+  let focusinSupported = 'onfocusin' in window
+  let focus = { focus: 'focusin', blur: 'focusout' }
+  let hover = { mouseenter: 'mouseover', mouseleave: 'mouseout' }
 
   specialEvents.click = specialEvents.mousedown = specialEvents.mouseup = specialEvents.mousemove = 'MouseEvents'
 
@@ -23,10 +23,10 @@ module.exports = function ($) {
     if (event.ns) var matcher = matcherFor(event.ns)
     return (handlers[zid(element)] || []).filter(function (handler) {
       return handler &&
-        (!event.e || handler.e == event.e) &&
+        (!event.e || handler.e === event.e) &&
         (!event.ns || matcher.test(handler.ns)) &&
         (!fn || zid(handler.fn) === zid(fn)) &&
-        (!selector || handler.sel == selector)
+        (!selector || handler.sel === selector)
     })
   }
   function parse (event) {
@@ -38,8 +38,8 @@ module.exports = function ($) {
   }
 
   function eventCapture (handler, captureSetting) {
-    return handler.del &&
-      (!focusinSupported && (handler.e in focus)) ||
+    return (handler.del &&
+      (!focusinSupported && (handler.e in focus))) ||
       !!captureSetting
   }
 
@@ -48,9 +48,10 @@ module.exports = function ($) {
   }
 
   function add (element, events, fn, data, selector, delegator, capture) {
-    var id = zid(element), set = (handlers[id] || (handlers[id] = []))
+    let id = zid(element)
+    let set = (handlers[id] || (handlers[id] = []))
     events.split(/\s/).forEach(function (event) {
-      if (event == 'ready') return $(document).ready(fn)
+      if (event === 'ready') return $(document).ready(fn)
       var handler = parse(event)
       handler.fn = fn
       handler.sel = selector
@@ -67,8 +68,11 @@ module.exports = function ($) {
         e = compatible(e)
         if (e.isImmediatePropagationStopped()) return
         e.data = data
-        var result = callback.apply(element, e._args == undefined ? [e] : [e].concat(e._args))
-        if (result === false) e.preventDefault(), e.stopPropagation()
+        var result = callback.apply(element, e._args === undefined ? [e] : [e].concat(e._args))
+        if (result === false) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
         return result
       }
       handler.i = set.length
@@ -116,14 +120,14 @@ module.exports = function ($) {
     return this.on(event, selector, data, callback, 1)
   }
 
-  var returnTrue = function () { return true },
-    returnFalse = function () { return false },
-    ignoreProperties = /^([A-Z]|returnValue$|layer[XY]$|webkitMovement[XY]$)/,
-    eventMethods = {
-      preventDefault: 'isDefaultPrevented',
-      stopImmediatePropagation: 'isImmediatePropagationStopped',
-      stopPropagation: 'isPropagationStopped'
-    }
+  let returnTrue = function () { return true }
+  let returnFalse = function () { return false }
+  let ignoreProperties = /^([A-Z]|returnValue$|layer[XY]$|webkitMovement[XY]$)/
+  let eventMethods = {
+    preventDefault: 'isDefaultPrevented',
+    stopImmediatePropagation: 'isImmediatePropagationStopped',
+    stopPropagation: 'isPropagationStopped'
+  }
 
   function compatible (event, source) {
     if (source || !event.isDefaultPrevented) {
@@ -150,7 +154,8 @@ module.exports = function ($) {
   }
 
   function createProxy (event) {
-    var key, proxy = { originalEvent: event }
+    let key
+    let proxy = { originalEvent: event }
     for (key in event) { if (!ignoreProperties.test(key) && event[key] !== undefined) proxy[key] = event[key] }
 
     return compatible(proxy, event)
@@ -173,7 +178,9 @@ module.exports = function ($) {
   }
 
   $.fn.on = function (event, selector, data, callback, one) {
-    var autoRemove, delegator, $this = this
+    let autoRemove
+    let delegator
+    let $this = this
     if (event && !isString(event)) {
       $.each(event, function (type, fn) {
         $this.on(type, selector, data, fn, one)
@@ -181,8 +188,15 @@ module.exports = function ($) {
       return $this
     }
 
-    if (!isString(selector) && !isFunction(callback) && callback !== false) { callback = data, data = selector, selector = undefined }
-    if (callback === undefined || data === false) { callback = data, data = undefined }
+    if (!isString(selector) && !isFunction(callback) && callback !== false) {
+      callback = data
+      data = selector
+      selector = undefined
+    }
+    if (callback === undefined || data === false) {
+      callback = data
+      data = undefined
+    }
 
     if (callback === false) callback = returnFalse
 
@@ -196,7 +210,8 @@ module.exports = function ($) {
 
       if (selector) {
         delegator = function (e) {
-          var evt, match = $(e.target).closest(selector, element).get(0)
+          let evt
+          let match = $(e.target).closest(selector, element).get(0)
           if (match && match !== element) {
             evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element})
             return (autoRemove || callback).apply(match, [evt].concat(slice.call(arguments, 1)))
@@ -216,7 +231,10 @@ module.exports = function ($) {
       return $this
     }
 
-    if (!isString(selector) && !isFunction(callback) && callback !== false) { callback = selector, selector = undefined }
+    if (!isString(selector) && !isFunction(callback) && callback !== false) {
+      callback = selector
+      selector = undefined
+    }
 
     if (callback === false) callback = returnFalse
 
@@ -265,9 +283,13 @@ module.exports = function ($) {
   })
 
   $.Event = function (type, props) {
-    if (!isString(type)) props = type, type = props.type
-    var event = document.createEvent(specialEvents[type] || 'Events'), bubbles = true
-    if (props) for (var name in props) (name == 'bubbles') ? (bubbles = !!props[name]) : (event[name] = props[name])
+    if (!isString(type)) {
+      props = type
+      type = props.type
+    }
+    let event = document.createEvent(specialEvents[type] || 'Events')
+    let bubbles = true
+    if (props) for (var name in props) (name === 'bubbles') ? (bubbles = !!props[name]) : (event[name] = props[name])
     event.initEvent(type, bubbles, true)
     return compatible(event)
   }

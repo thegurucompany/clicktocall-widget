@@ -540,12 +540,13 @@ let Zepto = (function () {
             return $.contains(parent, node)
           })
         })
-      } else if (this.length == 1) result = $(zepto.qsa(this[0], selector))
+      } else if (this.length === 1) result = $(zepto.qsa(this[0], selector))
       else result = this.map(function () { return zepto.qsa(this, selector) })
       return result
     },
     closest: function (selector, context) {
-      var nodes = [], collection = typeof selector === 'object' && $(selector)
+      let nodes = []
+      let collection = typeof selector === 'object' && $(selector)
       this.each(function (_, node) {
         while (node && !(collection ? collection.indexOf(node) >= 0 : zepto.matches(node, selector))) { node = node !== context && !isDocument(node) && node.parentNode }
         if (node && nodes.indexOf(node) < 0) nodes.push(node)
@@ -553,7 +554,8 @@ let Zepto = (function () {
       return $(nodes)
     },
     parents: function (selector) {
-      var ancestors = [], nodes = this
+      let ancestors = []
+      let nodes = this
       while (nodes.length > 0) {
         nodes = $.map(nodes, function (node) {
           if ((node = node.parentNode) && !isDocument(node) && ancestors.indexOf(node) < 0) {
@@ -587,18 +589,20 @@ let Zepto = (function () {
     },
     show: function () {
       return this.each(function () {
-        this.style.display == 'none' && (this.style.display = '')
-        if (getComputedStyle(this, '').getPropertyValue('display') == 'none') { this.style.display = defaultDisplay(this.nodeName) }
+        this.style.display === 'none' && (this.style.display = '')
+        if (window.getComputedStyle(this, '').getPropertyValue('display') === 'none') { this.style.display = defaultDisplay(this.nodeName) }
       })
     },
     replaceWith: function (newContent) {
       return this.before(newContent).remove()
     },
     wrap: function (structure) {
-      var func = isFunction(structure)
+      let func = isFunction(structure)
+      let dom
+      let clone
       if (this[0] && !func) {
-        var dom = $(structure).get(0),
-          clone = dom.parentNode || this.length > 1
+        dom = $(structure).get(0)
+        clone = dom.parentNode || this.length > 1
       }
 
       return this.each(function (index) {
@@ -621,8 +625,9 @@ let Zepto = (function () {
     wrapInner: function (structure) {
       var func = isFunction(structure)
       return this.each(function (index) {
-        var self = $(this), contents = self.contents(),
-          dom = func ? structure.call(this, index) : structure
+        let self = $(this)
+        let contents = self.contents()
+        let dom = func ? structure.call(this, index) : structure
         contents.length ? contents.wrapAll(dom) : self.append(dom)
       })
     },
@@ -641,7 +646,7 @@ let Zepto = (function () {
     toggle: function (setting) {
       return this.each(function () {
         var el = $(this)
-        ;(setting === undefined ? el.css('display') == 'none' : setting) ? el.show() : el.hide()
+        ;(setting === undefined ? el.css('display') === 'none' : setting) ? el.show() : el.hide()
       })
     },
     prev: function (selector) { return $(this.pluck('previousElementSibling')).filter(selector || '*') },
@@ -663,9 +668,9 @@ let Zepto = (function () {
         : (0 in this ? this.pluck('textContent').join('') : null)
     },
     attr: function (name, value) {
-      var result
+      let result
       return (typeof name === 'string' && !(1 in arguments))
-        ? (0 in this && this[0].nodeType == 1 && (result = this[0].getAttribute(name)) != null ? result : undefined)
+        ? (0 in this && this[0].nodeType === 1 && (result = this[0].getAttribute(name)) != null ? result : undefined)
         : this.each(function (idx) {
           if (this.nodeType !== 1) return
           if (isObject(name)) for (key in name) setAttribute(this, key, name[key])
@@ -716,15 +721,14 @@ let Zepto = (function () {
     offset: function (coordinates) {
       if (coordinates) {
         return this.each(function (index) {
-          var $this = $(this),
-            coords = funcArg(this, coordinates, index, $this.offset()),
-            parentOffset = $this.offsetParent().offset(),
-            props = {
-              top: coords.top - parentOffset.top,
-              left: coords.left - parentOffset.left
-            }
-
-          if ($this.css('position') == 'static') props['position'] = 'relative'
+          let $this = $(this)
+          let coords = funcArg(this, coordinates, index, $this.offset())
+          let parentOffset = $this.offsetParent().offset()
+          let props = {
+            top: coords.top - parentOffset.top,
+            left: coords.left - parentOffset.left
+          }
+          if ($this.css('position') === 'static') props['position'] = 'relative'
           $this.css(props)
         })
       }
@@ -743,11 +747,11 @@ let Zepto = (function () {
         var element = this[0]
         if (typeof property === 'string') {
           if (!element) return
-          return element.style[camelize(property)] || getComputedStyle(element, '').getPropertyValue(property)
+          return element.style[camelize(property)] || window.getComputedStyle(element, '').getPropertyValue(property)
         } else if (isArray(property)) {
           if (!element) return
           var props = {}
-          var computedStyle = getComputedStyle(element, '')
+          var computedStyle = window.getComputedStyle(element, '')
           $.each(property, function (_, prop) {
             props[prop] = (element.style[camelize(prop)] || computedStyle.getPropertyValue(prop))
           })
@@ -756,7 +760,7 @@ let Zepto = (function () {
       }
 
       var css = ''
-      if (type(property) == 'string') {
+      if (type(property) === 'string') {
         if (!value && value !== 0) { this.each(function () { this.style.removeProperty(dasherize(property)) }) } else { css = dasherize(property) + ':' + maybeAddPx(property, value) }
       } else {
         for (key in property) {
@@ -780,7 +784,8 @@ let Zepto = (function () {
       return this.each(function (idx) {
         if (!('className' in this)) return
         classList = []
-        var cls = className(this), newName = funcArg(this, name, idx, cls)
+        let cls = className(this)
+        let newName = funcArg(this, name, idx, cls)
         newName.split(/\s+/g).forEach(function (klass) {
           if (!$(this).hasClass(klass)) classList.push(klass)
         }, this)
@@ -801,7 +806,8 @@ let Zepto = (function () {
     toggleClass: function (name, when) {
       if (!name) return this
       return this.each(function (idx) {
-        var $this = $(this), names = funcArg(this, name, idx, className(this))
+        let $this = $(this)
+        let names = funcArg(this, name, idx, className(this))
         names.split(/\s+/g).forEach(function (klass) {
           (when === undefined ? !$this.hasClass(klass) : when)
             ? $this.addClass(klass) : $this.removeClass(klass)
@@ -827,12 +833,12 @@ let Zepto = (function () {
     position: function () {
       if (!this.length) return
 
-      var elem = this[0],
+      let elem = this[0]
         // Get *real* offsetParent
-        offsetParent = this.offsetParent(),
+      let offsetParent = this.offsetParent()
         // Get correct offsets
-        offset = this.offset(),
-        parentOffset = rootNodeRE.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset()
+      let offset = this.offset()
+      let parentOffset = rootNodeRE.test(offsetParent[0].nodeName) ? { top: 0, left: 0 } : offsetParent.offset()
 
       // Subtract element margins
       // note: when an element has margin: auto the offsetLeft and marginLeft
@@ -853,7 +859,7 @@ let Zepto = (function () {
     offsetParent: function () {
       return this.map(function () {
         var parent = this.offsetParent || document.body
-        while (parent && !rootNodeRE.test(parent.nodeName) && $(parent).css('position') == 'static') { parent = parent.offsetParent }
+        while (parent && !rootNodeRE.test(parent.nodeName) && $(parent).css('position') === 'static') { parent = parent.offsetParent }
         return parent
       })
     }
@@ -868,7 +874,8 @@ let Zepto = (function () {
       dimension.replace(/./, function (m) { return m[0].toUpperCase() })
 
     $.fn[dimension] = function (value) {
-      var offset, el = this[0]
+      let offset
+      let el = this[0]
       if (value === undefined) {
         return isWindow(el) ? el['inner' + dimensionProperty]
           : isDocument(el) ? el.documentElement['scroll' + dimensionProperty]
@@ -890,34 +897,35 @@ let Zepto = (function () {
   // Generate the `after`, `prepend`, `before`, `append`,
   // `insertAfter`, `insertBefore`, `appendTo`, and `prependTo` methods.
   adjacencyOperators.forEach(function (operator, operatorIndex) {
-    var inside = operatorIndex % 2 //= > prepend, append
-
+    let inside = operatorIndex % 2 // = > prepend, append
     $.fn[operator] = function () {
       // arguments can be nodes, arrays of nodes, Zepto objects and HTML strings
-      var argType, nodes = $.map(arguments, function (arg) {
-          var arr = []
-          argType = type(arg)
-          if (argType == 'array') {
-            arg.forEach(function (el) {
-              if (el.nodeType !== undefined) return arr.push(el)
-              else if ($.zepto.isZ(el)) return arr = arr.concat(el.get())
-              arr = arr.concat(zepto.fragment(el))
-            })
-            return arr
-          }
-          return argType == 'object' || arg == null
-            ? arg : zepto.fragment(arg)
-        }),
-        parent, copyByClone = this.length > 1
+      let argType
+      let nodes = $.map(arguments, function (arg) {
+        var arr = []
+        argType = type(arg)
+        if (argType === 'array') {
+          arg.forEach(function (el) {
+            if (el.nodeType !== undefined) return arr.push(el)
+            else if ($.zepto.isZ(el)) return (arr = arr.concat(el.get()))
+            arr = arr.concat(zepto.fragment(el))
+          })
+          return arr
+        }
+        return argType === 'object' || arg == null
+          ? arg : zepto.fragment(arg)
+      })
+      let parent
+      let copyByClone = this.length > 1
       if (nodes.length < 1) return this
 
       return this.each(function (_, target) {
         parent = inside ? target : target.parentNode
 
         // convert all methods to a "before" operation
-        target = operatorIndex == 0 ? target.nextSibling
-          : operatorIndex == 1 ? target.firstChild
-            : operatorIndex == 2 ? target
+        target = operatorIndex === 0 ? target.nextSibling
+          : operatorIndex === 1 ? target.firstChild
+            : operatorIndex === 2 ? target
               : null
 
         var parentInDocument = $.contains(document.documentElement, parent)
@@ -931,8 +939,9 @@ let Zepto = (function () {
             traverseNode(node, function (el) {
               if (el.nodeName != null && el.nodeName.toUpperCase() === 'SCRIPT' &&
                (!el.type || el.type === 'text/javascript') && !el.src) {
-                var target = el.ownerDocument ? el.ownerDocument.defaultView : window
-                target['eval'].call(target, el.innerHTML)
+                let target = el.ownerDocument ? el.ownerDocument.defaultView : window
+                let targetEval = target['eval']
+                targetEval.call(target, el.innerHTML)
               }
             })
           }

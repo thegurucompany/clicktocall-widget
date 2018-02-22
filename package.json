@@ -13,7 +13,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "bluebird": "^3.5.1",
+    "colr": "^1.2.2",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
@@ -30,6 +30,7 @@
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-ajax": "^0.1.13",
     "karma-webpack": "^2.0.9",
+    "promise": "^8.0.1",
     "superagent": "^3.8.2",
     "webpack-stream": "^4.0.1"
   }

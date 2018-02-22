@@ -1,6 +1,6 @@
 const request = require('superagent')
 const config = require('../config')
-const Promise = require('bluebird')
+const Promise = require('promise')
 const ENDPOINTS = {
   companyPhones: {
     show: '/company_phones'
@@ -46,7 +46,7 @@ class ApiClient {
     return req
   }
   /**
-    * executes an API Call to via baseRequest abstractions. returns a bluebird
+    * executes an API Call to via baseRequest abstractions. returns a promise
     * promise, rejecting on any HTTP errors or resolving with response
     * @param {string}  method - HTTP Method [GET, POST, PUT, DELETE,...]
     * @param {string}  route - dot based route from endpoints const

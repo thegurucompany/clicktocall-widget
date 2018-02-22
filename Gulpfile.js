@@ -1,20 +1,19 @@
-const gulp = require('gulp'),
-  babel = require('gulp-babel'),
-  notify = require('gulp-notify'),
-  concat = require('gulp-concat'),
-  uglify = require('gulp-uglify'),
-  standard = require('gulp-standard'),
-  sourcemaps = require('gulp-sourcemaps'),
-  stylish = require('jshint-stylish'),
-  webpack = require('webpack-stream'),
-  del = require('del'),
-  pckg = require('./package.json'),
-  modulePath = './node_modules',
-  distFolder = 'dist'
-;
+const gulp = require('gulp')
+const babel = require('gulp-babel')
+const notify = require('gulp-notify')
+const concat = require('gulp-concat')
+const uglify = require('gulp-uglify')
+const standard = require('gulp-standard')
+const sourcemaps = require('gulp-sourcemaps')
+const stylish = require('jshint-stylish')
+const webpack = require('webpack-stream')
+const del = require('del')
+const pckg = require('./package.json')
+const modulePath = './node_modules'
+const distFolder = 'dist'
 
-gulp.task('js', () =>{
-  return gulp.src([
+gulp.task('lint', () => {
+  gulp.src([
       './src/**/*.js'
     ])
     .pipe(standard())
@@ -23,6 +22,10 @@ gulp.task('js', () =>{
       quiet: true,
       showRuleNames: true
     }))
+})
+
+gulp.task('js', () => {
+  return gulp.src('./src/widget.js')
     .pipe(webpack())
     .pipe(babel({
       presets: ['es2015']
@@ -30,14 +33,13 @@ gulp.task('js', () =>{
     .pipe(sourcemaps.init())
     .pipe(concat(`widget-${pckg.version}.js`))
     .pipe(sourcemaps.write())
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(`./${distFolder}/js`))
     .pipe(notify('JS processed'))
-  ;
 });
 
-gulp.task('watch', ['js'], () =>{
-  gulp.watch('./src/**/*.js', ['js']);
+gulp.task('watch', ['lint', 'js'], () =>{
+  gulp.watch('./src/**/*.js', ['lint', 'js']);
 });
 
 gulp.task('clean', () =>{
@@ -45,5 +47,6 @@ gulp.task('clean', () =>{
 });
 
 gulp.task('default', ['clean'], () =>{
+  gulp.start('lint');
   gulp.start('js');
 });
