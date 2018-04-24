@@ -48,7 +48,7 @@ module.exports = (options, settings) => {
       margin-left: -25%;
     }
     a.gcomm-click-to-call-button .gcomm-click-to-call-off-hours {
-      width: 25.0rem;
+      width: 15.0rem;
       position: absolute;
       bottom: ${Styles.buttonSize + 1.5}rem;
       box-shadow: rgba(0, 0, 0, 0.17) 2px 2px 15px 2px;
@@ -61,6 +61,7 @@ module.exports = (options, settings) => {
       line-height: 1.4em;
       font-size: 1.0rem;
       display: none;
+      ${options.positionCss}
     }
   `
 }

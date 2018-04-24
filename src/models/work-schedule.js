@@ -28,11 +28,11 @@ class WorkSchedule {
   **/
   getUtcDate (utcDateStr) {
     let date = new Date(utcDateStr)
-    let utcDate = new Date()
-    utcDate.setHours(date.getUTCHours())
-    utcDate.setMinutes(date.getUTCMinutes())
-    utcDate.setSeconds(date.getUTCSeconds())
-    return utcDate
+    let today = new Date()
+    today.setHours(date.getHours())
+    today.setMinutes(date.getMinutes())
+    today.setSeconds(date.getSeconds())
+    return today
   }
   /**
    * returns true if the current day is included in configured `days` params

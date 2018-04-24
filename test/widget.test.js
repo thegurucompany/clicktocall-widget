@@ -96,11 +96,15 @@ describe('ClickToCallWidget', () => {
       it('should not display off hours box with valid WorkSchedule days & hours', async (done) => {
         mockSuccessAjaxRequest({
           'company_phone': {
+            'settings': {
+              'click_to_call_color': 'pink',
+              'click_to_call_position': 'right'
+            },
             'work_schedules': [
               {
                 'days': 127,
-                'starts_at': '2018-02-18T00:00:00.000Z',
-                'ends_at': '2018-02-19T23:59:59.000Z'
+                'starts_at': '2018-02-19T06:00:00.000Z',
+                'ends_at': '2018-02-19T05:59:59.000Z'
               }
             ]
           }
